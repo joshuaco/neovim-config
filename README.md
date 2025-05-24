@@ -23,7 +23,7 @@ This is my personal Neovim configuration, built with Lua and using lazy.nvim as 
 
 1. Clone this repository:
 ```bash
-git clone <your-repo-url> ~/.config/nvim
+git clone <git@github.com:joshuaco/neovim-config.git> ~/.config/nvim
 ```
 
 2. Start Neovim and let lazy.nvim install the plugins:

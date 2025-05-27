@@ -9,17 +9,22 @@ return {
     { 
       "<leader>ff",
       function() require('fzf-lua').files() end,
-      desc = "Find files in current working directory"
+      desc = "[F]ind [F]iles in current working directory"
     },
     { 
       "<leader>fg",
       function() require('fzf-lua').live_grep() end,
-      desc = "Find by grepping in current working directory"
-    }, 
-    { 
-      "<leader>fc",
-      function() require('fzf-lua').files({ cwd = '~/.config/nvim'}) end,
-      desc = "Find files in neovim config path"
+      desc = "[F]ind [G]rep"
+    },
+    {
+      "<leader>fh",
+      function() require("fzf-lua").helptags() end,
+      desc = "[F]ind [H]elp",
+    },
+    {
+      "<leader>fk",
+      function() require("fzf-lua").keymaps() end,
+      desc = "[F]ind [K]eymaps",
     }
   }
 }

@@ -25,6 +25,11 @@ return {
       "<leader>fk",
       function() require("fzf-lua").keymaps() end,
       desc = "[F]ind [K]eymaps",
-    }
+    },
+    {
+      "<leader>fb",
+      function() require("fzf-lua").builtin() end,
+      desc = "[F]ind [B]uiltin FZF",
+    },
   }
 }

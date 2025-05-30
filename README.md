@@ -18,6 +18,9 @@ This is my personal Neovim configuration, built with Lua and using lazy.nvim as 
 - Plugin management with [lazy.nvim](https://github.com/folke/lazy.nvim)
 - Lua-based configuration
 - Modular structure for easy maintenance
+- Full LSP support with Mason integration
+- Modern UI components with snacks.nvim
+- Fast fuzzy finding with fzf-lua
 
 ## Plugins Details
 
@@ -25,10 +28,20 @@ This configuration includes the following carefully selected plugins:
 
 ### Core Plugins
 - **[lazy.nvim](https://github.com/folke/lazy.nvim)** - Modern plugin manager for Neovim
+
+### LSP & Development
+- **[nvim-lspconfig](https://github.com/neovim/nvim-lspconfig)** - Quickstart configs for Nvim LSP
+- **[mason.nvim](https://github.com/mason-org/mason.nvim)** - Portable package manager for Neovim that runs everywhere
+- **[mason-lspconfig.nvim](https://github.com/mason-org/mason-lspconfig.nvim)** - Extension to mason.nvim that makes it easier to use lspconfig with mason.nvim
+- **[mason-tool-installer.nvim](https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim)** - Install or upgrade all of your third-party tools
+- **[fidget.nvim](https://github.com/j-hui/fidget.nvim)** - Extensible UI for Neovim notifications and LSP progress messages
+
+### Syntax & Language Support
 - **[nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter)** - Treesitter configurations and abstraction layer
 - **[nvim-treesitter-textobjects](https://github.com/nvim-treesitter/nvim-treesitter-textobjects)** - Syntax aware text-objects, select, move, swap, and peek support
 
 ### UI & Navigation
+- **[snacks.nvim](https://github.com/folke/snacks.nvim)** - Collection of small QoL plugins for Neovim (dashboard, explorer, indent guides, etc.)
 - **[fzf-lua](https://github.com/ibhagwan/fzf-lua)** - Improved fzf.vim written in lua
 - **[oil.nvim](https://github.com/stevearc/oil.nvim)** - A file explorer that lets you edit your filesystem like a normal Neovim buffer
 - **[which-key.nvim](https://github.com/folke/which-key.nvim)** - Displays a popup with possible key bindings
@@ -44,6 +57,26 @@ This configuration includes the following carefully selected plugins:
 
 ### Utilities
 - **[showkeys](https://github.com/nvzone/showkeys)** - Show keys pressed in real-time (useful for demonstrations)
+
+## Key Features
+
+### LSP Integration
+- Full Language Server Protocol support with automatic installation via Mason
+- Intelligent code completion and diagnostics
+- Go to definition, references, and implementations using fzf-lua
+- Real-time error and warning display with custom diagnostic signs
+- Inlay hints support for supported language servers
+
+### Modern UI
+- Dashboard with snacks.nvim for a welcoming start screen
+- File explorer that works like a buffer with oil.nvim
+- Fast fuzzy finding for files, grep, help tags, and keymaps
+- Project-aware workflow with automatic project detection
+
+### Developer Experience
+- Automatic indentation detection with vim-sleuth
+- Syntax highlighting and text objects with Tree-sitter
+- Which-key integration for discoverable keybindings
 
 ## Installation
 
@@ -61,6 +94,7 @@ nvim
 
 - Neovim 0.9.0 or higher
 - Git
+- FzF
 
 ## License
 

@@ -19,6 +19,8 @@ This is my personal Neovim configuration, built with Lua and using lazy.nvim as 
 - Lua-based configuration
 - Modular structure for easy maintenance
 - Full LSP support with Mason integration
+- Modern completion engine with blink.cmp
+- Automatic code formatting with conform.nvim
 - Modern UI components with snacks.nvim
 - Fast fuzzy finding with fzf-lua
 
@@ -35,6 +37,11 @@ This configuration includes the following carefully selected plugins:
 - **[mason-lspconfig.nvim](https://github.com/mason-org/mason-lspconfig.nvim)** - Extension to mason.nvim that makes it easier to use lspconfig with mason.nvim
 - **[mason-tool-installer.nvim](https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim)** - Install or upgrade all of your third-party tools
 - **[fidget.nvim](https://github.com/j-hui/fidget.nvim)** - Extensible UI for Neovim notifications and LSP progress messages
+
+### Completion & Formatting
+- **[blink.cmp](https://github.com/saghen/blink.cmp)** - Modern completion engine with Rust-powered fuzzy matching
+- **[friendly-snippets](https://github.com/rafamadriz/friendly-snippets)** - Collection of snippets for various languages
+- **[conform.nvim](https://github.com/stevearc/conform.nvim)** - Lightweight yet powerful formatter plugin with format-on-save
 
 ### Syntax & Language Support
 - **[nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter)** - Treesitter configurations and abstraction layer
@@ -62,21 +69,31 @@ This configuration includes the following carefully selected plugins:
 
 ### LSP Integration
 - Full Language Server Protocol support with automatic installation via Mason
-- Intelligent code completion and diagnostics
+- Intelligent code completion and diagnostics with blink.cmp
 - Go to definition, references, and implementations using fzf-lua
 - Real-time error and warning display with custom diagnostic signs
 - Inlay hints support for supported language servers
+
+### Code Completion & Formatting
+- High-performance completion engine powered by Rust fuzzy matching
+- LSP-based completions with path, buffer, and snippet support
+- Automatic code formatting on save with conform.nvim
+- Support for multiple formatters per language (stylua, prettier, etc.)
+- Signature help integration for function parameters
 
 ### Modern UI
 - Dashboard with snacks.nvim for a welcoming start screen
 - File explorer that works like a buffer with oil.nvim
 - Fast fuzzy finding for files, grep, help tags, and keymaps
 - Project-aware workflow with automatic project detection
+- Visual indicators and progress notifications
 
 ### Developer Experience
 - Automatic indentation detection with vim-sleuth
 - Syntax highlighting and text objects with Tree-sitter
 - Which-key integration for discoverable keybindings
+- Snippet support for faster code writing
+- Format-on-save for consistent code style
 
 ## Installation
 
@@ -95,6 +112,8 @@ nvim
 - Neovim 0.9.0 or higher
 - Git
 - FzF
+- Node.js (for prettier and other formatters)
+- Rust toolchain (optional, for optimal blink.cmp performance)
 
 ## License
 

@@ -7,6 +7,16 @@ return {
          javascript = { "prettierd", "prettier", stop_after_first = true },
          typescript = { "prettierd", "prettier", stop_after_first = true },
       },
+
+      -- config formatter specific options
+      formatters = {
+         prettierd = {
+            prepend_args = {
+               "--single-quote",
+               "--print-width","100" 
+            },
+         },
+      },
       format_on_save = {
          -- These options will be passed to conform.format()
          timeout_ms = 500,

@@ -4,8 +4,23 @@ return {
    dependencies = {
       -- Automatically install LSPs and related tools to stdpath for Neovim
       -- Mason must be loaded before its dependents so we need to set it up here.
-      -- NOTE: `opts = {}` is the same as calling `require('mason').setup({})`
-      { "mason-org/mason.nvim", opts = {} },
+      {
+         "mason-org/mason.nvim",
+         build = ":MasonUpdate",
+         opts = {
+            ui = {
+               border = "rounded",
+               width = 0.8,
+               height = 0.8,
+               icons = {
+                  package_installed = "✓",
+                  package_pending = "➜",
+                  package_uninstalled = "✗",
+               },
+            },
+            max_concurrent_installers = 4,
+         },
+      },
       "mason-org/mason-lspconfig.nvim",
       "WhoIsSethDaniel/mason-tool-installer.nvim",
 
@@ -130,30 +145,43 @@ return {
       -- See :help vim.diagnostic.Opts
       vim.diagnostic.config({
          severity_sort = true,
-         float = { border = "rounded", source = "if_many" },
-         underline = { severity = vim.diagnostic.severity.ERROR },
+         update_in_insert = false, -- Don't update diagnostics while typing
+         float = {
+            border = "rounded",
+            source = "if_many",
+            header = "",
+            prefix = "",
+            focusable = true,
+         },
+         underline = {
+            severity = { min = vim.diagnostic.severity.WARN },
+         },
          signs = {
             text = {
-               [vim.diagnostic.severity.ERROR] = "󰅚 ",
-               [vim.diagnostic.severity.WARN] = "󰀪 ",
-               [vim.diagnostic.severity.INFO] = "󰋽 ",
-               [vim.diagnostic.severity.HINT] = "󰌶 ",
+               [vim.diagnostic.severity.ERROR] = "󰅚",
+               [vim.diagnostic.severity.WARN] = "󰀪",
+               [vim.diagnostic.severity.INFO] = "󰋽",
+               [vim.diagnostic.severity.HINT] = "󰌶",
             },
          },
          virtual_text = {
+            severity = { min = vim.diagnostic.severity.WARN }, -- Only warnings and errors
             source = "if_many",
-            spacing = 2,
-            format = function(diagnostic)
-               local diagnostic_message = {
-                  [vim.diagnostic.severity.ERROR] = diagnostic.message,
-                  [vim.diagnostic.severity.WARN] = diagnostic.message,
-                  [vim.diagnostic.severity.INFO] = diagnostic.message,
-                  [vim.diagnostic.severity.HINT] = diagnostic.message,
-               }
-               return diagnostic_message[diagnostic.severity]
-            end,
+            spacing = 4,
+            prefix = "●",
          },
       })
+
+      -- Additional diagnostic keymaps
+      vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Go to previous diagnostic" })
+      vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Go to next diagnostic" })
+      vim.keymap.set("n", "<leader>cd", vim.diagnostic.open_float, { desc = "Line Diagnostics" })
+      vim.keymap.set("n", "<leader>cD", function()
+         require("fzf-lua").diagnostics_document()
+      end, { desc = "Document Diagnostics" })
+      vim.keymap.set("n", "<leader>cw", function()
+         require("fzf-lua").diagnostics_workspace()
+      end, { desc = "Workspace Diagnostics" })
 
       -- LSP servers and clients are able to communicate to each other what features they support.
       --  By default, Neovim doesn't support everything that is in the LSP specification.
@@ -162,7 +190,11 @@ return {
       local original_capabilities = vim.lsp.protocol.make_client_capabilities()
       local capabilities = require("blink.cmp").get_lsp_capabilities(original_capabilities)
 
-      -- capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
+      -- Configure LSP handlers for consistent rounded borders
+      local handlers = {
+         ["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "rounded" }),
+         ["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = "rounded" }),
+      }
 
       -- Enable the following language servers
       --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
@@ -185,22 +217,64 @@ return {
          -- Some languages (like typescript) have entire language plugins that can be useful:
          --    https://github.com/pmizio/typescript-tools.nvim
          --
-         -- But for many setups, the LSP (`ts_ls`) will work just fine
-         ts_ls = {},
+         -- TypeScript/JavaScript - Using vtsls for better performance and features
+         vtsls = {
+            settings = {
+               vtsls = {
+                  autoUseWorkspaceTsdk = true,
+               },
+               typescript = {
+                  preferences = {
+                     importModuleSpecifier = "relative",
+                  },
+                  inlayHints = {
+                     parameterNames = { enabled = "all" },
+                     parameterTypes = { enabled = true },
+                     variableTypes = { enabled = true },
+                     propertyDeclarationTypes = { enabled = true },
+                     functionLikeReturnTypes = { enabled = true },
+                     enumMemberValues = { enabled = true },
+                  },
+               },
+               javascript = {
+                  inlayHints = {
+                     parameterNames = { enabled = "all" },
+                     parameterTypes = { enabled = true },
+                     variableTypes = { enabled = true },
+                     propertyDeclarationTypes = { enabled = true },
+                     functionLikeReturnTypes = { enabled = true },
+                     enumMemberValues = { enabled = true },
+                  },
+               },
+            },
+         },
 
          lua_ls = {
-            -- cmd = { ... },
-            -- filetypes = { ... },
-            -- capabilities = {},
-            -- settings = {
-            --   Lua = {
-            --     completion = {
-            --       callSnippet = 'Replace',
-            --     },
-            --     -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
-            --     -- diagnostics = { disable = { 'missing-fields' } },
-            --   },
-            -- },
+            settings = {
+               Lua = {
+                  runtime = { version = "LuaJIT" },
+                  workspace = {
+                     checkThirdParty = false,
+                     library = {
+                        vim.env.VIMRUNTIME,
+                        "${3rd}/luv/library",
+                     },
+                  },
+                  completion = {
+                     callSnippet = "Replace",
+                  },
+                  telemetry = { enable = false },
+                  diagnostics = {
+                     globals = { "vim" },
+                     disable = { "missing-fields" }, -- Reduce noise
+                  },
+                  hint = {
+                     enable = true,
+                     arrayIndex = "Auto",
+                     setType = true,
+                  },
+               },
+            },
          },
       }
 
@@ -232,8 +306,9 @@ return {
                local server = servers[server_name] or {}
                -- This handles overriding only values explicitly passed
                -- by the server configuration above. Useful when disabling
-               -- certain features of an LSP (for example, turning off formatting for ts_ls)
+               -- certain features of an LSP (for example, turning off formatting for vtsls)
                server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
+               server.handlers = handlers
                require("lspconfig")[server_name].setup(server)
             end,
          },

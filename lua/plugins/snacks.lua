@@ -8,7 +8,21 @@ return {
     -- or leave it empty to use the default settings
     -- refer to the configuration section below
     bigfile = { enabled = true },
-    dashboard = { enabled = true },
+    dashboard = {
+      enabled = true,
+      sections = {
+        { section = "header" },
+        { section = "keys", gap = 1, padding = 1 },
+        { section = "startup" },
+        {
+          section = "terminal",
+          cmd = "fortune -s | cowsay",
+          height = 8,
+          padding = 1,
+          enabled = false, -- Set to true if you have fortune and cowsay installed
+        },
+      },
+    },
     explorer = { enabled = true },
     indent = { enabled = true },
     input = { enabled = true },

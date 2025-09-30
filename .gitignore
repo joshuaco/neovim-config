@@ -1,3 +1,14 @@
-lazy-lock.json
-.luarc.json
+# Temporary files
 tmp/
+
+# Lazy plugin manager
+lazy-lock.json
+
+# System files
+.DS_Store
+*.swp
+*.swo
+*~
+
+# Log files
+*.log

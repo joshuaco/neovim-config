@@ -39,5 +39,5 @@ require("lazy").setup({
 -- Load Keymap
 require("config.keymaps")
 
--- For video recording purposes
+-- For video recording purposes (disabled by default for performance)
 vim.cmd("ShowkeysToggle")
